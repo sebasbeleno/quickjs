@@ -1,4 +1,4 @@
-import { useDeferredValue, useEffect, useState } from "react";
+import { useCallback, useDeferredValue, useEffect, useState } from "react";
 import CodeEditor from "./components/CodeEditor";
 import {
   ResizableHandle,
@@ -12,15 +12,13 @@ function App() {
   const [result, setResult] = useState();
   const deferredCode = useDeferredValue(code);
 
-  function handleRunCode() {
+  const handleRunCode = useCallback(() => {
     const result = runJavaScript(code)
       .map((result) => (result !== undefined ? result : ""))
       .join("\n");
 
-    console.log(result);
-
     setResult(result);
-  }
+  }, [code]);
 
   useEffect(() => {
     if (deferredCode !== undefined) {
