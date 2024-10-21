@@ -3,15 +3,17 @@ import { transform } from "sucrase";
 type evaluationResult = (string | undefined)[];
 
 function transformJavaScript(code: string): string {
-  console.log("Transforming JavaScript");
-  return transform(code, {
-    transforms: ["typescript"],
-  }).code;
+  try {
+    return transform(code, {
+      transforms: ["typescript"],
+    }).code;
+  } catch (error) {
+    console.error(error);
+    return `Error: ${error.message}`;
+  }
 }
 
 function runJavaScript(code: string | undefined): evaluationResult {
-  console.log("Running JavaScript");
-
   if (!code) {
     return [];
   }
@@ -36,10 +38,8 @@ function runJavaScript(code: string | undefined): evaluationResult {
   };
 
   try {
-    // Execute the wrapped code
     new Function("customLog", wrappedCode)(customLog);
   } catch (error: unknown) {
-    console.error("Execution error:", error);
     if (error instanceof Error) {
       results[results.length - 1] = `Error: ${error.message}`;
     } else {

@@ -2,7 +2,7 @@ import Editor from "@monaco-editor/react";
 
 interface CodeEditorProps {
   code: string | undefined;
-  onChange: (code: string | undefined) => void;
+  onChange?: (code: string | undefined) => void;
 }
 
 function CodeEditor({ code, onChange }: CodeEditorProps) {

@@ -1,5 +1,4 @@
-import { useState } from "react";
-import ActionBar from "./components/ActionBar";
+import { useDeferredValue, useEffect, useState } from "react";
 import CodeEditor from "./components/CodeEditor";
 import {
   ResizableHandle,
@@ -10,12 +9,24 @@ import { runJavaScript } from "./runners";
 
 function App() {
   const [code, setCode] = useState<string | undefined>();
+  const [result, setResult] = useState();
+  const deferredCode = useDeferredValue(code);
 
   function handleRunCode() {
-    const result = runJavaScript(code);
+    const result = runJavaScript(code)
+      .map((result) => (result !== undefined ? result : ""))
+      .join("\n");
 
     console.log(result);
+
+    setResult(result);
   }
+
+  useEffect(() => {
+    if (deferredCode !== undefined) {
+      handleRunCode();
+    }
+  }, [deferredCode, handleRunCode]);
 
   return (
     <ResizablePanelGroup direction="horizontal">
@@ -25,7 +36,7 @@ function App() {
         </div>
       </ResizablePanel>
       <ResizableHandle />
-      <ResizablePanel defaultSize={50}>
+      {/* <ResizablePanel defaultSize={50}>
         <ResizablePanelGroup direction="vertical">
           <ResizablePanel defaultSize={10} maxSize={15} minSize={10}>
             <div className="flex h-full items-center justify-center p-6">
@@ -39,6 +50,11 @@ function App() {
             </div>
           </ResizablePanel>
         </ResizablePanelGroup>
+      </ResizablePanel> */}
+      <ResizablePanel defaultSize={90}>
+        <div className="flex h-full">
+          <CodeEditor code={result} />
+        </div>
       </ResizablePanel>
     </ResizablePanelGroup>
   );
