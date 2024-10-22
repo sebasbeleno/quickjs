@@ -6,6 +6,7 @@ import {
   ResizablePanelGroup,
 } from "./components/ui/resizable";
 import { runJavaScript } from "./runners";
+import Layout from "./components/layout";
 
 function App() {
   const [code, setCode] = useState<string | undefined>();
@@ -27,14 +28,16 @@ function App() {
   }, [deferredCode, handleRunCode]);
 
   return (
-    <ResizablePanelGroup direction="horizontal">
-      <ResizablePanel defaultSize={50} minSize={25} maxSize={80}>
-        <div className="flex h-screen">
-          <CodeEditor code={code} onChange={setCode} />
-        </div>
-      </ResizablePanel>
-      <ResizableHandle />
-      {/* <ResizablePanel defaultSize={50}>
+    <Layout>
+      <div className="w-auto">
+      <ResizablePanelGroup direction="horizontal">
+        <ResizablePanel defaultSize={50} minSize={25} maxSize={80}>
+          <div className="flex h-screen">
+            <CodeEditor code={code} onChange={setCode} readOnly={false} />
+          </div>
+        </ResizablePanel>
+        <ResizableHandle />
+        {/* <ResizablePanel defaultSize={50}>
         <ResizablePanelGroup direction="vertical">
           <ResizablePanel defaultSize={10} maxSize={15} minSize={10}>
             <div className="flex h-full items-center justify-center p-6">
@@ -49,12 +52,14 @@ function App() {
           </ResizablePanel>
         </ResizablePanelGroup>
       </ResizablePanel> */}
-      <ResizablePanel defaultSize={90}>
-        <div className="flex h-full">
-          <CodeEditor code={result} />
-        </div>
-      </ResizablePanel>
-    </ResizablePanelGroup>
+        <ResizablePanel defaultSize={90}>
+          <div className="flex h-full">
+            <CodeEditor code={result} readOnly={true} />
+          </div>
+        </ResizablePanel>
+      </ResizablePanelGroup>
+      </div>
+    </Layout>
   );
 }
 

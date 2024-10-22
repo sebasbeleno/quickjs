@@ -3,9 +3,10 @@ import Editor from "@monaco-editor/react";
 interface CodeEditorProps {
   code: string | undefined;
   onChange?: (code: string | undefined) => void;
+  readOnly?: boolean;
 }
 
-function CodeEditor({ code, onChange }: CodeEditorProps) {
+function CodeEditor({ code, onChange, readOnly }: CodeEditorProps) {
   return (
     <Editor
       value={code}
@@ -15,6 +16,9 @@ function CodeEditor({ code, onChange }: CodeEditorProps) {
       defaultLanguage="javascript"
       defaultValue="// some comment"
       theme="vs-dark"
+      options={{
+        readOnly: readOnly,
+      }}
     />
   );
 }
