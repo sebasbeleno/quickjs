@@ -14,10 +14,10 @@ function CodeEditor({ code, onChange, readOnly }: CodeEditorProps) {
       width="100%"
       height="100%"
       defaultLanguage="javascript"
-      defaultValue="// some comment"
       theme="vs-dark"
       options={{
         readOnly: readOnly,
+        smoothScrolling: true,
       }}
     />
   );
