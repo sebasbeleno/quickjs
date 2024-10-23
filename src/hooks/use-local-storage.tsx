@@ -30,12 +30,19 @@ const useLocalStorage = (key: string, initialValue?: any) => {
     setValue({ ...storedValue, [file]: "console.log('hello')" });
   };
 
+  const deleteFile = (file: string) => {
+    const newFiles = { ...storedValue };
+    delete newFiles[file];
+    setValue(newFiles);
+  }
+
   return {
     storedValue,
     setValue,
     editFile,
     createFile,
     files: storedValue,
+    deleteFile,
   };
 };
 

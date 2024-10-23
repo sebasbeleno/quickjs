@@ -1,5 +1,6 @@
 import { AppSidebar } from "./appSidebar";
 import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -18,6 +19,7 @@ export default function Layout({
       <main className="flex flex-col h-full w-full overflow-hidden">
         <SidebarTrigger />
         {children}
+        <Toaster />
       </main>
     </SidebarProvider>
   );

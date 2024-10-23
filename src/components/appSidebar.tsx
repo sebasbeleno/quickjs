@@ -1,4 +1,4 @@
-import { ChevronUp, File, Plus, Sun } from "lucide-react";
+import { ChevronUp, File, Plus, Sun, Trash } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -9,6 +9,7 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
+  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "./ui/sidebar";
@@ -30,6 +31,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import useLocalStorage from "@/hooks/use-local-storage";
 import { useState } from "react";
+import { toast } from "sonner";
 
 interface AppSidebarProps {
   currentFile: string;
@@ -40,11 +42,12 @@ export function AppSidebar({ currentFile, setCurrentFile }: AppSidebarProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [fileName, setFileName] = useState("");
 
-  const { createFile, files } = useLocalStorage("files");
+  const { createFile, files, deleteFile } = useLocalStorage("files");
 
   const handleCreateFile = () => {
     createFile(fileName.replace(/\s/g, "-"));
     setFileName("");
+    toast("File created successfully 🎉");
     setIsDialogOpen(false);
   };
 
@@ -92,12 +95,36 @@ export function AppSidebar({ currentFile, setCurrentFile }: AppSidebarProps) {
             <SidebarMenu>
               {Object.keys(files).map((file) => (
                 <SidebarMenuItem key={file}>
-                  <SidebarMenuButton asChild onClick={() => setCurrentFile(file)} isActive={currentFile === file} className="cursor-pointer">
+                  <SidebarMenuButton
+                    asChild
+                    onClick={() => setCurrentFile(file)}
+                    isActive={currentFile === file}
+                    className="cursor-pointer"
+                  >
                     <div>
                       <File />
                       <span>{file}</span>
                     </div>
                   </SidebarMenuButton>
+                  {currentFile !== file && (
+                    <SidebarMenuAction title="Delete File" className="border">
+                      <a
+                        onClick={() => {
+                          if (
+                            confirm(
+                              "Are you sure you want to delete this file?"
+                            )
+                          ) {
+                            deleteFile(file);
+                            toast("File deleted successfully");
+                            setCurrentFile(Object.keys(files)[0]);
+                          }
+                        }}
+                      >
+                        <Trash size={15} />
+                      </a>
+                    </SidebarMenuAction>
+                  )}
                 </SidebarMenuItem>
               ))}
             </SidebarMenu>
