@@ -7,9 +7,19 @@ import {
 } from "./components/ui/resizable";
 import { runJavaScript } from "./runners";
 import Layout from "./components/layout";
+import useLocalStorage from "./hooks/use-local-storage";
+
+const DEFAULT_FILES = {
+  "index": `console.log("Hello, World!")`,
+}
 
 function App() {
-  const [code, setCode] = useState<string | undefined>();
+  const [files, setFiles, editFile] = useLocalStorage("files", DEFAULT_FILES);
+  const [currentFile, setCurrentFile] = useState("index");
+
+
+  const [code, setCode] = useState<string | undefined>(files[currentFile]);
+
   const [result, setResult] = useState();
   const deferredCode = useDeferredValue(code);
 
@@ -19,6 +29,8 @@ function App() {
       .join("\n");
 
     setResult(result);
+    editFile(currentFile, code);
+
   }, [code]);
 
   useEffect(() => {
