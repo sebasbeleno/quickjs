@@ -10,13 +10,14 @@ import Layout from "./components/layout";
 import useLocalStorage from "./hooks/use-local-storage";
 
 const DEFAULT_FILES = {
-  "index": `console.log("Hello, World!")`,
-}
+  index: `console.log("Hello, World!")`,
+};
 
 function App() {
-  const [files, setFiles, editFile] = useLocalStorage("files", DEFAULT_FILES);
-  const [currentFile, setCurrentFile] = useState("index");
+  const { createFile, editFile, setValue, storedValue, files } =
+    useLocalStorage("files", DEFAULT_FILES);
 
+  const [currentFile, setCurrentFile] = useState("index");
 
   const [code, setCode] = useState<string | undefined>(files[currentFile]);
 
@@ -30,7 +31,6 @@ function App() {
 
     setResult(result);
     editFile(currentFile, code);
-
   }, [code]);
 
   useEffect(() => {
@@ -39,17 +39,21 @@ function App() {
     }
   }, [deferredCode, handleRunCode]);
 
+  useEffect(() => {
+    setCode(files[currentFile]);
+  }, [currentFile]);
+
   return (
-    <Layout>
+    <Layout currentFile={currentFile} setCurrentFile={setCurrentFile}>
       <div className="w-auto">
-      <ResizablePanelGroup direction="horizontal">
-        <ResizablePanel defaultSize={50} minSize={25} maxSize={80}>
-          <div className="flex h-screen">
-            <CodeEditor code={code} onChange={setCode} readOnly={false} />
-          </div>
-        </ResizablePanel>
-        <ResizableHandle />
-        {/* <ResizablePanel defaultSize={50}>
+        <ResizablePanelGroup direction="horizontal">
+          <ResizablePanel defaultSize={50} minSize={25} maxSize={80}>
+            <div className="flex h-screen">
+              <CodeEditor code={code} onChange={setCode} readOnly={false} />
+            </div>
+          </ResizablePanel>
+          <ResizableHandle />
+          {/* <ResizablePanel defaultSize={50}>
         <ResizablePanelGroup direction="vertical">
           <ResizablePanel defaultSize={10} maxSize={15} minSize={10}>
             <div className="flex h-full items-center justify-center p-6">
@@ -64,12 +68,12 @@ function App() {
           </ResizablePanel>
         </ResizablePanelGroup>
       </ResizablePanel> */}
-        <ResizablePanel defaultSize={90}>
-          <div className="flex h-full">
-            <CodeEditor code={result} readOnly={true} />
-          </div>
-        </ResizablePanel>
-      </ResizablePanelGroup>
+          <ResizablePanel defaultSize={90}>
+            <div className="flex h-full">
+              <CodeEditor code={result} readOnly={true} />
+            </div>
+          </ResizablePanel>
+        </ResizablePanelGroup>
       </div>
     </Layout>
   );
