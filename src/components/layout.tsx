@@ -14,7 +14,7 @@ export default function Layout({
   setCurrentFile,
 }: LayoutProps) {
   return (
-    <SidebarProvider>
+    <SidebarProvider className="bg-[#1a1b26] text-white">
       <AppSidebar currentFile={currentFile} setCurrentFile={setCurrentFile} />
       <main className="flex flex-col h-full w-full overflow-hidden">
         <SidebarTrigger />

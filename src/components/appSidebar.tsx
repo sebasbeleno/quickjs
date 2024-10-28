@@ -52,7 +52,7 @@ export function AppSidebar({ currentFile, setCurrentFile }: AppSidebarProps) {
   };
 
   return (
-    <Sidebar>
+    <Sidebar variant="floating" collapsible="offcanvas" className="bg-[#1a1b26]">
       <SidebarHeader>
         <SidebarGroup>
           <SidebarGroupLabel asChild>Projects</SidebarGroupLabel>
