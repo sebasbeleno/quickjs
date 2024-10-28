@@ -1,50 +1,40 @@
-# React + TypeScript + Vite
+# QUICKJS
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+![Cover](./public/cover.jpg)
 
-Currently, two official plugins are available:
+You'r personal JavaScript and TypeScript playground. Write and run your code in a safe and secure environment.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## Features
 
-## Expanding the ESLint configuration
+- [x] Write and run JavaScript code
+- [x] Write and run TypeScript code
+- [x] Create and delete scripts
+- [ ] Save and load scripts
+- [ ] Share scripts
+- [ ] Change theme
+- [ ] Add environment variables
+- [ ] Self-hosted with Docker
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+### How to run
 
-- Configure the top-level `parserOptions` property like this:
+QuickJS is a simple web application built with React and using Vite as a bundler. To run the application, follow the steps below:
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+1. Clone the repository
+
+```bash
+git clone
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+2. Install dependencies
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
-
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+```bash
+npm install
 ```
+
+3. Run the application
+
+```bash
+npm run dev
+```
+
+4. Open the browser and navigate to `http://localhost:3000`
