@@ -30,11 +30,17 @@ function runJavaScript(code: string | undefined): evaluationResult {
     .join("\n");
 
   const customLog = (lineIndex: number, ...args: never[]) => {
-    results[lineIndex] = args
+    const formattedValue = args
       .map((arg) =>
         typeof arg === "object" ? JSON.stringify(arg) : String(arg)
       )
       .join(" ");
+
+    if (results[lineIndex] === undefined) {
+      results[lineIndex] = formattedValue + " ";
+    } else {
+      results[lineIndex] += formattedValue + " ";
+    }
   };
 
   try {

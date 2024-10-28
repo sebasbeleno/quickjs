@@ -8,7 +8,7 @@ interface CodeEditorProps {
   theme: EditorTheme;
 }
 
-function CodeEditor({ code, onChange, readOnly }: CodeEditorProps) {
+function CodeEditor({ code, onChange, readOnly, theme }: CodeEditorProps) {
 
   return (
     <Editor
@@ -17,10 +17,14 @@ function CodeEditor({ code, onChange, readOnly }: CodeEditorProps) {
       width="100%"
       height="100%"
       defaultLanguage="javascript"
-      theme="vs-dark"
+      theme={theme}
       options={{
         readOnly: readOnly,
         smoothScrolling: true,
+        minimap: {
+          enabled: false,
+        },
+        contextmenu: false,
       }}
     />
   );

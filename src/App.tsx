@@ -68,7 +68,7 @@ function App() {
           </ResizablePanel>
           <ResizableHandle />
 
-          <ResizablePanel defaultSize={20}>
+          <ResizablePanel defaultSize={50}>
             <div className="flex h-full">
               <CodeEditor code={result} readOnly={true} theme={theme} />
             </div>
