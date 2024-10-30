@@ -15,7 +15,7 @@ You'r personal JavaScript and TypeScript playground. Write and run your code in 
 - [ ] Add environment variables
 - [ ] Self-hosted with Docker
 
-### How to run
+### How to run dev environment
 
 QuickJS is a simple web application built with React and using Vite as a bundler. To run the application, follow the steps below:
 
@@ -38,3 +38,13 @@ npm run dev
 ```
 
 4. Open the browser and navigate to `http://localhost:3000`
+
+### How to build the application
+
+To build the application, run the following command:
+
+```bash
+docker build -t quickjs .
+
+docker run -p 8080:8080 quickjs
+```
