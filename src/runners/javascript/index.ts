@@ -7,9 +7,12 @@ function transformJavaScript(code: string): string {
     return transform(code, {
       transforms: ["typescript"],
     }).code;
-  } catch (error) {
-    console.error(error);
-    return `Error: ${error.message}`;
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return `Error: ${error.message}`;
+    } else {
+      return "Unknown error";
+    }
   }
 }
 
