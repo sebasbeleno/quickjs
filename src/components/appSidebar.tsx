@@ -30,8 +30,15 @@ import {
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import useLocalStorage from "@/hooks/use-local-storage";
-import { useState } from "react";
+import { FormEvent, useState } from "react";
 import { toast } from "sonner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "./ui/select";
 
 interface AppSidebarProps {
   currentFile: string;
@@ -41,42 +48,82 @@ interface AppSidebarProps {
 export function AppSidebar({ currentFile, setCurrentFile }: AppSidebarProps) {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [fileName, setFileName] = useState("");
+  const [fileLang, setFileLang] = useState("javascript");
 
   const { createFile, files, deleteFile } = useLocalStorage("files");
 
-  const handleCreateFile = () => {
-    createFile(fileName.replace(/\s/g, "-"));
+  const handleCreateFile = (e: FormEvent) => {
+    e.preventDefault();
+
+    if (fileName.trim() === "") {
+      toast("File name cannot be empty");
+      return;
+    }
+
+    const parsedFileName = fileName.replace(/\s/g, "-").toLocaleLowerCase();
+
+    if (files[parsedFileName]) {
+      toast("File already exists");
+      return;
+    }
+
+    setCurrentFile(fileName);
+    createFile(parsedFileName);
     setFileName("");
     toast("File created successfully 🎉");
     setIsDialogOpen(false);
   };
 
   return (
-    <Sidebar variant="floating" collapsible="offcanvas" className="bg-[#1a1b26]">
+    <Sidebar
+      variant="floating"
+      collapsible="offcanvas"
+      className="bg-[#1a1b26]"
+    >
       <SidebarHeader>
         <SidebarGroup>
           <SidebarGroupLabel asChild>Projects</SidebarGroupLabel>
-          <SidebarGroupAction title="Add Project">
+          <SidebarGroupAction asChild title="Add Project">
             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogTrigger asChild>
-                <Plus />
+              <DialogTrigger className="">
+                <Plus className=" " />
               </DialogTrigger>
               <DialogContent className="sm:max-w-md">
                 <DialogHeader>
-                  <DialogTitle>File Name</DialogTitle>
+                  <DialogTitle>New File</DialogTitle>
                 </DialogHeader>
-                <div className="flex items-center space-x-2">
-                  <div className="grid flex-1 gap-2">
-                    <label htmlFor="link" className="sr-only">
-                      Link
-                    </label>
-                    <Input
-                      id="link"
-                      value={fileName}
-                      onChange={(e) => setFileName(e.target.value)}
-                    />
+                <form onSubmit={handleCreateFile}>
+                  <div className="flex items-center space-x-2">
+                    <div className="grid flex-1 gap-2">
+                      <div>
+                        <label>File Name</label>
+                        <Input
+                          value={fileName}
+                          onChange={(e) => setFileName(e.target.value)}
+                        />
+                      </div>
+                      <div>
+                        <label>Language</label>
+                        <Select
+                          onValueChange={setFileLang}
+                          defaultValue={fileLang}
+                        >
+                          <SelectTrigger>
+                            <SelectValue placeholder="Language" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="javascript">
+                              JavaScript
+                            </SelectItem>
+                            <SelectItem value="typescript">
+                              TypeScript
+                            </SelectItem>
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                </form>
                 <DialogFooter>
                   <Button type="submit" onClick={handleCreateFile}>
                     Create
