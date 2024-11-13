@@ -25,6 +25,10 @@ function CodeEditor({ code, onChange, readOnly, theme }: CodeEditorProps) {
           enabled: false,
         },
         contextmenu: false,
+        scrollbar: {
+          vertical: "hidden",
+          horizontal: "hidden",
+        }
       }}
     />
   );

@@ -1,4 +1,4 @@
-import { useCallback, useDeferredValue, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import CodeEditor from "./components/CodeEditor";
 import {
   ResizableHandle,
@@ -23,28 +23,27 @@ function App() {
   const [currentFile, setCurrentFile] = useState("index");
   const [code, setCode] = useState<string | undefined>(files[currentFile]);
   const [result, setResult] = useState<string | undefined>();
-  const deferredCode = useDeferredValue(code);
   const theme: EditorTheme = "tokio-night";
 
-  const handleRunCode = useCallback(() => {
+  useEffect(() => {
+    if (!code) {
+      return;
+    }
+
     const result = runJavaScript(code)
       .map((result) => (result !== undefined ? result : ""))
       .join("\n");
 
     setResult(result);
     editFile(currentFile, code || "");
-  }, [code, currentFile]);
+  }, [code]);
 
-  useEffect(() => {
-    if (deferredCode !== undefined) {
-      handleRunCode();
-    }
-  }, [deferredCode]);
-
+  // set the code when the current file changes.
   useEffect(() => {
     setCode(files[currentFile]);
   }, [currentFile, files]);
 
+  // set the theme for the code editor.
   useEffect(() => {
     if (monaco) {
       monaco.editor.defineTheme("tokio-night", tokyoNightTheme);
