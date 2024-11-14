@@ -30,11 +30,10 @@ function App() {
       return;
     }
 
-    const result = runJavaScript(code)
-      .map((result) => (result !== undefined ? result : ""))
-      .join("\n");
+    runJavaScript(code).then((result) => {
+      setResult(result.join("\n"));
+    });
 
-    setResult(result);
     editFile(currentFile, code || "");
   }, [code]);
 

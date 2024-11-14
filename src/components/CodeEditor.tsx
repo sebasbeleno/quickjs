@@ -28,6 +28,9 @@ function CodeEditor({ code, onChange, readOnly, theme }: CodeEditorProps) {
         scrollbar: {
           vertical: "hidden",
           horizontal: "hidden",
+        },
+        guides: {
+          indentation: false,
         }
       }}
     />

@@ -39,6 +39,7 @@ const tokyoNightTheme: EditorThemeConfig = {
     "editor.findMatchHighlightBackground": "#3d59a166", // Find match highlight
     "editor.wordHighlightBackground": "#515c7e44", // Word highlight
     "editor.wordHighlightStrongBackground": "#515c7e55", // Strong word highlight
+    "editor.lineHighlightBorder": "#1a1b26", // Active border
   },
 };
 

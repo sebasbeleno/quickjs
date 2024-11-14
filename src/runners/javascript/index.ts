@@ -16,7 +16,7 @@ function transformJavaScript(code: string): string {
   }
 }
 
-function runJavaScript(code: string | undefined): evaluationResult {
+async function runJavaScript(code: string | undefined): Promise<evaluationResult> {
   if (!code) {
     return [];
   }
@@ -24,13 +24,15 @@ function runJavaScript(code: string | undefined): evaluationResult {
   const transformedCode = transformJavaScript(code);
   const lines = transformedCode.split("\n");
   const results: evaluationResult = new Array(lines.length).fill(undefined);
+  const promises = []; // Array to store promises from async calls
 
   // Wrap each console.log with a line number
-  const wrappedCode = lines
+  const wrappedCodeCustomLog = lines
     .map((line, index) =>
       line.replace(/console\.log\((.*)\)/g, `customLog(${index}, $1)`)
     )
     .join("\n");
+
 
   const customLog = (lineIndex: number, ...args: never[]) => {
     const formattedValue = args
@@ -47,8 +49,16 @@ function runJavaScript(code: string | undefined): evaluationResult {
   };
 
   try {
-    new Function("customLog", wrappedCode)(customLog);
-  } catch (error: unknown) {
+    const executionPromise = new Function(
+      "customLog",
+      `return (async () => { ${wrappedCodeCustomLog} })()`
+    )(customLog);
+
+    promises.push(executionPromise);
+
+    // Wait for all promises to resolve, including async calls within the code
+    await Promise.all(promises);
+  } catch (error) {
     if (error instanceof Error) {
       results[results.length - 1] = `Error: ${error.message}`;
     } else {
