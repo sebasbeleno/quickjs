@@ -1,26 +1,20 @@
-import { AppSidebar } from "./appSidebar";
-import { SidebarProvider, SidebarTrigger } from "./ui/sidebar";
-import { Toaster } from "@/components/ui/sonner";
+import { AppSidebar } from './appSidebar';
+import { SidebarProvider, SidebarTrigger } from './ui/sidebar';
+import { Toaster } from '@/components/ui/sonner';
 
 interface LayoutProps {
-  children: React.ReactNode;
-  currentFile: string;
-  setCurrentFile: (file: string) => void;
+    children: React.ReactNode;
 }
 
-export default function Layout({
-  children,
-  currentFile,
-  setCurrentFile,
-}: LayoutProps) {
-  return (
-    <SidebarProvider className="bg-[#1a1b26] text-white">
-      <AppSidebar currentFile={currentFile} setCurrentFile={setCurrentFile} />
-      <main className="flex flex-col h-full w-full overflow-hidden">
-        <SidebarTrigger />
-        {children}
-        <Toaster />
-      </main>
-    </SidebarProvider>
-  );
+export default function Layout({ children }: LayoutProps) {
+    return (
+        <SidebarProvider className="bg-[#1a1b26] text-white">
+            <AppSidebar />
+            <main className="flex h-full w-full flex-col overflow-hidden">
+                <SidebarTrigger />
+                {children}
+                <Toaster />
+            </main>
+        </SidebarProvider>
+    );
 }

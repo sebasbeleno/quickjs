@@ -1,31 +1,24 @@
 import { EditorTheme } from '@/config/themeOptions';
-import { selectCurrentFile, updateFileContent } from '@/store/slices/filesSlice';
+import { selectCurrentFile } from '@/store/slices/filesSlice';
 import Editor from '@monaco-editor/react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 interface CodeEditorProps {
-    readOnly?: boolean;
     theme: EditorTheme;
 }
 
-function CodeEditor({ readOnly, theme }: CodeEditorProps) {
+function ExecutionResult({ theme }: CodeEditorProps) {
     const currentFile = useSelector(selectCurrentFile);
-    const dispatch = useDispatch();
 
     return (
         <Editor
             value={currentFile ? currentFile.content : ''}
-            onChange={(value) => {
-                if (value) {
-                    dispatch(updateFileContent({ id: currentFile.id, content: value }));
-                }
-            }}
             width="100%"
             height="100%"
             defaultLanguage="javascript"
             theme={theme}
             options={{
-                readOnly: readOnly,
+                readOnly: true,
                 smoothScrolling: true,
                 minimap: {
                     enabled: false,
@@ -43,4 +36,4 @@ function CodeEditor({ readOnly, theme }: CodeEditorProps) {
     );
 }
 
-export default CodeEditor;
+export default ExecutionResult;
