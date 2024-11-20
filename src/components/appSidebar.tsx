@@ -40,7 +40,7 @@ import { getFilenameWithExtension, getRandomFileId } from '@/lib/utils';
 // TODO: Make files list component
 export function AppSidebar() {
     const files: File[] | null = useSelector(selectAllFiles);
-    const currentFileId = useSelector((state: RootState) => state.files.currentFileId);
+    const currentFileId = useSelector((state: RootState) => state.files.currentFile.id);
 
     const [isDialogOpen, setIsDialogOpen] = useState(false);
     const [fileName, setFileName] = useState('');

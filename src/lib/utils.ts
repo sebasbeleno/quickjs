@@ -12,7 +12,9 @@ export function cn(...inputs: ClassValue[]) {
 
 export function getFilenameWithExtension(filename: string, language: string) {
   const extension = languageToExtension[language] || "txt";
-  return `${filename}.${extension}`;
+  const filenameWithoutSpaces = filename.replace(/\s/g, "_");
+
+  return `${filenameWithoutSpaces}.${extension}`;
 }
 
 export function getLanguageFromFilename(filename: string) {

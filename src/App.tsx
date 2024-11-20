@@ -6,8 +6,9 @@ import { useMonaco } from '@monaco-editor/react';
 import { tokyoNightTheme } from './themes/tokio';
 import { EditorTheme } from './config/themeOptions';
 import { Provider } from 'react-redux';
-import { store } from './store';
+import { persistor, store } from './store';
 import ExecutionResult from './components/ExecutionResult';
+import { PersistGate } from 'redux-persist/integration/react';
 
 function App() {
     const monaco = useMonaco();
@@ -24,24 +25,26 @@ function App() {
 
     return (
         <Provider store={store}>
-            <Layout>
-                <div className="w-auto">
-                    <ResizablePanelGroup direction="horizontal">
-                        <ResizablePanel defaultSize={50} minSize={50} maxSize={80}>
-                            <div className="flex h-screen">
-                                <CodeEditor theme={theme} />
-                            </div>
-                        </ResizablePanel>
-                        <ResizableHandle />
+            <PersistGate loading={null} persistor={persistor}>
+                <Layout>
+                    <div className="w-auto">
+                        <ResizablePanelGroup direction="horizontal">
+                            <ResizablePanel defaultSize={50} minSize={50} maxSize={80}>
+                                <div className="flex h-screen">
+                                    <CodeEditor theme={theme} />
+                                </div>
+                            </ResizablePanel>
+                            <ResizableHandle />
 
-                        <ResizablePanel defaultSize={50}>
-                            <div className="flex h-full">
-                                <ExecutionResult theme={theme} />
-                            </div>
-                        </ResizablePanel>
-                    </ResizablePanelGroup>
-                </div>
-            </Layout>
+                            <ResizablePanel defaultSize={50}>
+                                <div className="flex h-full">
+                                    <ExecutionResult theme={theme} />
+                                </div>
+                            </ResizablePanel>
+                        </ResizablePanelGroup>
+                    </div>
+                </Layout>
+            </PersistGate>
         </Provider>
     );
 }

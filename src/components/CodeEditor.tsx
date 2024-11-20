@@ -1,4 +1,5 @@
 import { EditorTheme } from '@/config/themeOptions';
+import { getLanguageFromFilename } from '@/lib/utils';
 import { selectCurrentFile, updateFileContent } from '@/store/slices/filesSlice';
 import Editor from '@monaco-editor/react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -22,7 +23,7 @@ function CodeEditor({ readOnly, theme }: CodeEditorProps) {
             }}
             width="100%"
             height="100%"
-            defaultLanguage="javascript"
+            language={getLanguageFromFilename(currentFile.name)}
             theme={theme}
             options={{
                 readOnly: readOnly,

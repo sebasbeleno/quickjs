@@ -1,5 +1,5 @@
 import { EditorTheme } from '@/config/themeOptions';
-import { selectCurrentFile } from '@/store/slices/filesSlice';
+import { RootState } from '@/store';
 import Editor from '@monaco-editor/react';
 import { useSelector } from 'react-redux';
 
@@ -8,11 +8,13 @@ interface CodeEditorProps {
 }
 
 function ExecutionResult({ theme }: CodeEditorProps) {
-    const currentFile = useSelector(selectCurrentFile);
+    const currentFileExecutionResult = useSelector(
+        (state: RootState) => state.files.currentFile.codeExecutionResult,
+    );
 
     return (
         <Editor
-            value={currentFile ? currentFile.content : ''}
+            value={currentFileExecutionResult ? currentFileExecutionResult : ''}
             width="100%"
             height="100%"
             defaultLanguage="javascript"

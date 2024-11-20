@@ -11,7 +11,7 @@ const filesAdapter = createEntityAdapter<File>({});
 
 const initialState = filesAdapter.getInitialState({
     ids: ['1'],
-    currentFileId: '1',
+    currentFile: { id: '1', codeExecutionResult: 'Hello, world!' },
     isLoading: false,
     entities: {
         '1': {
@@ -31,7 +31,7 @@ export const filesSlice = createSlice({
         removeFile: filesAdapter.removeOne,
 
         setCurrentFileId(state, action: PayloadAction<string>) {
-            state.currentFileId = action.payload;
+            state.currentFile.id = action.payload;
         },
 
         updateFileContent(state, action: PayloadAction<{ id: string; content: string }>) {
@@ -41,11 +41,21 @@ export const filesSlice = createSlice({
                 file.content = content;
             }
         },
+
+        updateCodeExecutionResult(state, action: PayloadAction<string>) {
+            state.currentFile.codeExecutionResult = action.payload;
+        },
     },
 });
 
-export const { addFile, removeFile, updateFile, setCurrentFileId, updateFileContent } =
-    filesSlice.actions;
+export const {
+    addFile,
+    removeFile,
+    updateFile,
+    setCurrentFileId,
+    updateFileContent,
+    updateCodeExecutionResult,
+} = filesSlice.actions;
 
 export const {
     selectIds: selectFileIds,
@@ -55,7 +65,7 @@ export const {
 
 export const selectCurrentFile = createSelector(
     (state: RootState) => state,
-    (state: RootState) => state.files.currentFileId,
+    (state: RootState) => state.files.currentFile.id,
     (state, fileId) => selectFileById(state, fileId),
 );
 export default filesSlice.reducer;
