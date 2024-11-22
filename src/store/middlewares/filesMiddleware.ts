@@ -1,15 +1,12 @@
 import { createListenerMiddleware, isAnyOf, TypedStartListening } from '@reduxjs/toolkit';
 import {
     addFile,
-    File,
-    selectAllFiles,
     setCurrentFileId,
     updateCodeExecutionResult,
     updateFileContent,
 } from '../slices/filesSlice';
 import { AppDispatch, RootState } from '..';
 import { runJavaScript } from '@/runners';
-import * as idb from '@/lib/indexDB';
 
 export const fileListenerMiddleware = createListenerMiddleware();
 
