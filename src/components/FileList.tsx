@@ -61,10 +61,10 @@ const FileList: React.FC<FileListProps> = ({ files, currentFileId, openDialog })
                                 <DropdownMenuItem
                                     className="cursor-pointer"
                                     onClick={() => {
-                                        openDialog(id, 'rename');
+                                        openDialog(id, 'edit');
                                     }}
                                 >
-                                    <span>Rename</span>
+                                    <span>Edit</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem
                                     className="cursor-pointer"
