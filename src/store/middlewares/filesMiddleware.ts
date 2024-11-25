@@ -1,6 +1,7 @@
 import { createListenerMiddleware, isAnyOf, TypedStartListening } from '@reduxjs/toolkit';
 import {
     addFile,
+    deleteFile,
     setCurrentFileId,
     updateCodeExecutionResult,
     updateFileContent,
@@ -16,8 +17,9 @@ const startAppListening = fileListenerMiddleware.startListening as AppStartListe
 
 // This middleware listens for changes to the file content and the current file ID and runs the JavaScript code when the content changes or the current file ID changes.
 startAppListening({
-    matcher: isAnyOf(updateFileContent, setCurrentFileId, addFile),
+    matcher: isAnyOf(updateFileContent, setCurrentFileId, addFile, deleteFile),
     effect: async (action, listenerApi) => {
+        console.log('File listener middleware', action.type, action);
         // code runner
         if (updateFileContent.match(action)) {
             const result = await runJavaScript(action.payload.content);
@@ -33,6 +35,16 @@ startAppListening({
 
                 const resultString = result.join('\n');
                 listenerApi.dispatch(updateCodeExecutionResult(resultString));
+            }
+        } else if (deleteFile.match(action)) {
+            console.log('File deleted', action.payload);
+            const fileIdDeleted = action.payload;
+            const currentFileId = listenerApi.getState().files.currentFile.id;
+
+            if (fileIdDeleted === currentFileId) {
+                const newCurrentFileId = listenerApi.getState().files.ids[0];
+                console.log('Deleted current file', fileIdDeleted, 'Setting new current file', newCurrentFileId);
+                listenerApi.dispatch(setCurrentFileId(newCurrentFileId));
             }
         }
 

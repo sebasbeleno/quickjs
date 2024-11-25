@@ -23,7 +23,7 @@ function CodeEditor({ readOnly, theme }: CodeEditorProps) {
             }}
             width="100%"
             height="100%"
-            language={getLanguageFromFilename(currentFile.name)}
+            language={getLanguageFromFilename(currentFile ? currentFile.name : '')}
             theme={theme}
             options={{
                 readOnly: readOnly,

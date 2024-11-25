@@ -1,8 +1,8 @@
 import React from 'react';
 import { File as FileIcon, MoreHorizontal } from 'lucide-react';
 import { SidebarMenu, SidebarMenuAction, SidebarMenuButton, SidebarMenuItem } from './ui/sidebar';
-import { File, setCurrentFileId } from '@/store/slices/filesSlice';
-import { useDispatch } from 'react-redux';
+import { File, selectNumberOfFiles, setCurrentFileId } from '@/store/slices/filesSlice';
+import { useDispatch, useSelector } from 'react-redux';
 import {
     DropdownMenu,
     DropdownMenuItem,
@@ -10,13 +10,16 @@ import {
     DropdownMenuContent,
     DropdownMenuLabel,
 } from './ui/dropdown-menu';
+import { FileDialogType } from './FileDialog';
 
 interface FileListProps {
     files: File[];
     currentFileId: string;
+    openDialog: (fileId: string, type: FileDialogType) => void;
 }
 
-const FileList: React.FC<FileListProps> = ({ files, currentFileId }) => {
+const FileList: React.FC<FileListProps> = ({ files, currentFileId, openDialog }) => {
+    const numberOfFiles = useSelector(selectNumberOfFiles);
     const dispatch = useDispatch();
 
     return (
@@ -46,29 +49,39 @@ const FileList: React.FC<FileListProps> = ({ files, currentFileId }) => {
                                 </SidebarMenuAction>
                             </DropdownMenuTrigger>
                             <DropdownMenuContent>
-                                <DropdownMenuLabel>
-                                    File actions
-                                </DropdownMenuLabel>
+                                <DropdownMenuLabel>File actions</DropdownMenuLabel>
                                 <DropdownMenuItem disabled>
-                                    <div className='flex justify-between w-full items-center'>
+                                    <div className="flex w-full items-center justify-between">
                                         <span>Share</span>
-                                        <span className='text-[10px] bg-yellow-200 rounded-md px-2 text-yellow-950'>Soon</span>
+                                        <span className="rounded-md bg-yellow-200 px-2 text-[10px] text-yellow-950">
+                                            Soon
+                                        </span>
                                     </div>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem className='cursor-pointer'>
-                                    <span>
-                                        Rename
-                                    </span>
+                                <DropdownMenuItem
+                                    className="cursor-pointer"
+                                    onClick={() => {
+                                        openDialog(id, 'rename');
+                                    }}
+                                >
+                                    <span>Rename</span>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem className='cursor-pointer'>
-                                    <span>
-                                        Duplicate
-                                    </span>
+                                <DropdownMenuItem
+                                    className="cursor-pointer"
+                                    onClick={() => {
+                                        openDialog(id, 'duplicate');
+                                    }}
+                                >
+                                    <span>Duplicate</span>
                                 </DropdownMenuItem>
-                                <DropdownMenuItem className='cursor-pointer'>
-                                    <span className='text-red-500'>
-                                        Delete
-                                    </span>
+                                <DropdownMenuItem
+                                    className="cursor-pointer"
+                                    onClick={() => {
+                                        openDialog(id, 'delete');
+                                    }}
+                                    disabled={numberOfFiles === 1}
+                                >
+                                    <span className="text-red-500">Delete</span>
                                 </DropdownMenuItem>
                             </DropdownMenuContent>
                         </DropdownMenu>

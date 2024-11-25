@@ -1,5 +1,6 @@
 import { createEntityAdapter, createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { RootState } from '..';
+import { getRandomFileId } from '@/lib/utils';
 
 export interface File {
     id: string;
@@ -45,16 +46,40 @@ export const filesSlice = createSlice({
         updateCodeExecutionResult(state, action: PayloadAction<string>) {
             state.currentFile.codeExecutionResult = action.payload;
         },
+
+        updateFileName(state, action: PayloadAction<{ id: string; name: string }>) {
+            const { id, name } = action.payload;
+            const file = state.entities[id];
+            if (file) {
+                file.name = name;
+            }
+        },
+
+        duplicateFile(state, action: PayloadAction<string>) {
+            const file = state.entities[action.payload];
+            if (file) {
+                const id = getRandomFileId();
+                const name = file.name.replace(/(Copy \d+)?$/, `Copy ${id}`);
+
+                filesAdapter.addOne(state, { ...file, id, name });
+            }
+        },
+
+        deleteFile(state, action: PayloadAction<string>) {
+            filesAdapter.removeOne(state, action.payload);
+        },
     },
 });
 
 export const {
     addFile,
-    removeFile,
     updateFile,
     setCurrentFileId,
     updateFileContent,
     updateCodeExecutionResult,
+    updateFileName,
+    duplicateFile,
+    deleteFile,
 } = filesSlice.actions;
 
 export const {
@@ -68,4 +93,7 @@ export const selectCurrentFile = createSelector(
     (state: RootState) => state.files.currentFile.id,
     (state, fileId) => selectFileById(state, fileId),
 );
+
+export const selectNumberOfFiles = createSelector(selectFileIds, (ids) => ids.length);
+
 export default filesSlice.reducer;

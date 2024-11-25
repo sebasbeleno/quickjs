@@ -36,13 +36,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import FileList from './FileList';
 import { RootState } from '@/store';
 import { getFilenameWithExtension, getRandomFileId } from '@/lib/utils';
+import FileDialog, { FileDialogType } from './FileDialog';
 
 // TODO: Make files list component
 export function AppSidebar() {
     const files: File[] | null = useSelector(selectAllFiles);
     const currentFileId = useSelector((state: RootState) => state.files.currentFile.id);
 
-    const [isDialogOpen, setIsDialogOpen] = useState(false);
+    const [isNewFileDialogOpen, setIsNewFileDialogOpen] = useState(false);
+    const [isFileDialogOpen, setIsFileDialogOpen] = useState(false);
+    const [fileDialogType, setFileDialogType] = useState<FileDialogType>('delete');
+    const [fileDialogFileId, setFileDialogFileId] = useState('');
+
     const [fileName, setFileName] = useState('');
     const [fileLang, setFileLang] = useState('javascript');
 
@@ -70,7 +75,13 @@ export function AppSidebar() {
         dispatch(setCurrentFileId(id));
         setFileName('');
         toast('File created successfully 🎉');
-        setIsDialogOpen(false);
+        setIsNewFileDialogOpen(false);
+    };
+
+    const openFileDialog = (fileId: string, type: FileDialogType) => {
+        setFileDialogType(type);
+        setFileDialogFileId(fileId);
+        setIsFileDialogOpen(true);
     };
 
     return (
@@ -79,7 +90,7 @@ export function AppSidebar() {
                 <SidebarGroup>
                     <SidebarGroupLabel asChild>Projects</SidebarGroupLabel>
                     <SidebarGroupAction asChild title="Add Project">
-                        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+                        <Dialog open={isNewFileDialogOpen} onOpenChange={setIsNewFileDialogOpen}>
                             <DialogTrigger className="">
                                 <Plus className=" " />
                             </DialogTrigger>
@@ -134,7 +145,13 @@ export function AppSidebar() {
                 <SidebarGroup>
                     <SidebarGroupLabel>Your files</SidebarGroupLabel>
                     <SidebarGroupContent>
-                        <FileList files={files} currentFileId={currentFileId} />
+                        <FileList files={files} currentFileId={currentFileId} openDialog={openFileDialog} />
+                        <FileDialog
+                            type={fileDialogType}
+                            isOpen={isFileDialogOpen}
+                            onOpenChange={setIsFileDialogOpen}
+                            fileId={fileDialogFileId}
+                        />
                     </SidebarGroupContent>
                 </SidebarGroup>
             </SidebarContent>
