@@ -59,7 +59,7 @@ export const filesSlice = createSlice({
             const file = state.entities[action.payload];
             if (file) {
                 const id = getRandomFileId();
-                const name = file.name.replace(/(Copy \d+)?$/, `Copy ${id}`);
+                const name = `copy_of_${file.name}`;
 
                 filesAdapter.addOne(state, { ...file, id, name });
             }

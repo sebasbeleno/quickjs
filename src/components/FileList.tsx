@@ -1,7 +1,7 @@
 import React from 'react';
 import { File as FileIcon, MoreHorizontal } from 'lucide-react';
 import { SidebarMenu, SidebarMenuAction, SidebarMenuButton, SidebarMenuItem } from './ui/sidebar';
-import { File, selectNumberOfFiles, setCurrentFileId } from '@/store/slices/filesSlice';
+import { duplicateFile, File, selectNumberOfFiles, setCurrentFileId } from '@/store/slices/filesSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import {
     DropdownMenu,
@@ -21,6 +21,10 @@ interface FileListProps {
 const FileList: React.FC<FileListProps> = ({ files, currentFileId, openDialog }) => {
     const numberOfFiles = useSelector(selectNumberOfFiles);
     const dispatch = useDispatch();
+
+    const handleDuplicateFile = (fileId: string) => {
+        dispatch(duplicateFile(fileId));
+    }
 
     return (
         <SidebarMenu>
@@ -69,7 +73,7 @@ const FileList: React.FC<FileListProps> = ({ files, currentFileId, openDialog })
                                 <DropdownMenuItem
                                     className="cursor-pointer"
                                     onClick={() => {
-                                        openDialog(id, 'duplicate');
+                                        handleDuplicateFile(id);
                                     }}
                                 >
                                     <span>Duplicate</span>

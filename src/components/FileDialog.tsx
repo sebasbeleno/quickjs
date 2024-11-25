@@ -140,6 +140,7 @@ const FileDialog: React.FC<FileDialogProps> = ({ isOpen, onOpenChange, type, fil
         );
     }, [file, newFileLanguage, newFileName]);
 
+
     const renderDialogContent = useMemo(() => {
         switch (type) {
             case 'edit':
