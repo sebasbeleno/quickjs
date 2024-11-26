@@ -156,29 +156,9 @@ export function AppSidebar() {
                 </SidebarGroup>
             </SidebarContent>
             <SidebarFooter>
-                <SidebarMenu>
-                    <SidebarMenuItem>
-                        <DropdownMenu>
-                            <DropdownMenuTrigger asChild>
-                                <SidebarMenuButton>
-                                    <Sun /> <span>Theme</span>
-                                    <ChevronUp className="ml-auto" />
-                                </SidebarMenuButton>
-                            </DropdownMenuTrigger>
-                            <DropdownMenuContent
-                                side="top"
-                                className="w-[--radix-popper-anchor-width]"
-                            >
-                                <DropdownMenuItem>
-                                    <span>Light</span>
-                                </DropdownMenuItem>
-                                <DropdownMenuItem>
-                                    <span>Dark</span>
-                                </DropdownMenuItem>
-                            </DropdownMenuContent>
-                        </DropdownMenu>
-                    </SidebarMenuItem>
-                </SidebarMenu>
+                <span className='text-sm text-neutral-500'>
+                    Early Version - v0.1.0 web
+                </span>
             </SidebarFooter>
         </Sidebar>
     );

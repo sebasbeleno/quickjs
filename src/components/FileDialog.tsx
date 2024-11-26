@@ -72,9 +72,6 @@ const FileDialog: React.FC<FileDialogProps> = ({ isOpen, onOpenChange, type, fil
                     <span>
                         This action cannot be undone. This will permanently delete the file.
                     </span>
-                    <p>{JSON.stringify(file)}</p>
-                    {fileId}
-                    <p></p>
                 </AlertDialogDescription>
                 <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
@@ -145,15 +142,6 @@ const FileDialog: React.FC<FileDialogProps> = ({ isOpen, onOpenChange, type, fil
         switch (type) {
             case 'edit':
                 return EditFileDialog;
-            case 'duplicate':
-                return (
-                    <>
-                        <span>Duplicate</span>
-                        <span>
-                            <></>
-                        </span>
-                    </>
-                );
             case 'delete':
                 return DeleteDialog;
         }
