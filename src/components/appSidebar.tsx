@@ -1,4 +1,4 @@
-import { ChevronUp, Plus, Sun } from 'lucide-react';
+import { Plus } from 'lucide-react';
 import {
     Sidebar,
     SidebarContent,
@@ -8,16 +8,8 @@ import {
     SidebarGroupContent,
     SidebarGroupLabel,
     SidebarHeader,
-    SidebarMenu,
-    SidebarMenuButton,
-    SidebarMenuItem,
 } from './ui/sidebar';
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from './ui/dropdown-menu';
+
 import {
     Dialog,
     DialogContent,
